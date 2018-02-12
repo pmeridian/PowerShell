@@ -35,7 +35,7 @@ Get-ChildItem -Path $curr_path -Recurse -Filter *.ppt? | ForEach-Object {
     $stamper.addJavaScript("clickAdvance","app.fs.clickAdvances=false;")
     $stamper.Close()
     $reader.Close()
-    Remove-Item –path $pdf_filename
+    Remove-Item –path $pdf_tmp_filename
 }
 # Exit and release the PowerPoint object
 $ppt_app.Quit()

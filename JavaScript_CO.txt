@@ -1,0 +1,14 @@
+FullSreen
+
+if ( this.external == false ) {
+app.fs.clickAdvances=false;
+app.fs.escapeExits = true; // escape exits
+this.pageNum=0;
+app.fs.isFullScreen = true; // go to full screen view
+}
+
+
+
+ClickAdvance
+
+app.fs.clickAdvances=false;

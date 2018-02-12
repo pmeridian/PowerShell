@@ -23,18 +23,19 @@ Get-ChildItem -Path $curr_path -Recurse -Filter *.ppt? | ForEach-Object {
     $document = $ppt_app.Presentations.Open($_.FullName)
     # Create a name for the PDF document; they are stored in the invocation folder!
     # If you want them to be created locally in the folders containing the source PowerPoint file, replace $curr_path with $_.DirectoryName
-    $pdf_filename = "$($curr_path)\$($_.BaseName)_tmp.pdf"
+    $pdf_tmp_filename = "$($curr_path)\$($_.BaseName)_tmp.pdf"
     # Save as PDF -- 17 is the literal value of `wdFormatPDF`
     $opt= [Microsoft.Office.Interop.PowerPoint.PpSaveAsFileType]::ppSaveAsPDF
-    $document.SaveAs($pdf_filename, $opt)
+    $document.SaveAs($pdf_tmp_filename, $opt)
     # Close PowerPoint file
     $document.Close()
-    $reader = New-Object iTextSharp.text.pdf.PdfReader -ArgumentList $pdf_filename
+    $reader = New-Object iTextSharp.text.pdf.PdfReader -ArgumentList $pdf_tmp_filename
     $pdf_out_filename = "$($curr_path)\$($_.BaseName).pdf"
     $stamper = New-Object iTextSharp.text.pdf.PdfStamper($reader,[System.IO.File]::Create($pdf_out_filename))
     $stamper.addJavaScript("clickAdvance","app.fs.clickAdvances=false;")
     $stamper.Close()
     $reader.Close()
+    Remove-Item –path $pdf_filename
 }
 # Exit and release the PowerPoint object
 $ppt_app.Quit()
